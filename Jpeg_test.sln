@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Jpeg_test", "Jpeg_test.vcxp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpeg", "jpeg-9c\jpeg.vcxproj", "{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BmpLib", "BmpLib\BmpLib.vcxproj", "{5A209D61-7EBD-4C37-8C6C-3ACB71EDF586}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -21,6 +23,10 @@ Global
 		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.Debug|Win32.Build.0 = Release|Win32
 		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.Release|Win32.ActiveCfg = Release|Win32
 		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.Release|Win32.Build.0 = Release|Win32
+		{5A209D61-7EBD-4C37-8C6C-3ACB71EDF586}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5A209D61-7EBD-4C37-8C6C-3ACB71EDF586}.Debug|Win32.Build.0 = Debug|Win32
+		{5A209D61-7EBD-4C37-8C6C-3ACB71EDF586}.Release|Win32.ActiveCfg = Release|Win32
+		{5A209D61-7EBD-4C37-8C6C-3ACB71EDF586}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

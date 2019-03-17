@@ -3,6 +3,7 @@
 #include <math.h>
 #include "jpeglib.h"
 #include <setjmp.h>
+#include "BmpLib\BmpLib.h"
 
 JSAMPLE * image_buffer;	/* Points to large array of R,G,B-order data JSAMPLE = unsigned char */
 size_t image_buffer_size = 0;
@@ -11,9 +12,9 @@ int image_width;		/* Number of columns in image */
 
 
 GLOBAL(void)
-init_image_buffer(j_decompress_ptr cinfo)
+init_image_buffer(size_t i_BuffSize)
 {
-	image_buffer_size = cinfo->image_width * cinfo->image_height * cinfo->num_components*sizeof(JSAMPLE);
+	image_buffer_size = i_BuffSize;
 	image_buffer = (JSAMPLE *)malloc(image_buffer_size);
 }
 
@@ -79,8 +80,8 @@ write_JPEG_file(char * filename, int quality)
 
 	cinfo.image_width = image_width; 	/* image width and height, in pixels */
 	cinfo.image_height = image_height;
-	cinfo.input_components = 3;		/* # of color components per pixel */
-	cinfo.in_color_space = JCS_RGB; 	/* colorspace of input image */
+	cinfo.input_components = 1;		/* # of color components per pixel */
+	cinfo.in_color_space = JCS_GRAYSCALE; 	/* colorspace of input image */
 
 	jpeg_set_defaults(&cinfo);
 
@@ -88,7 +89,7 @@ write_JPEG_file(char * filename, int quality)
 
 	jpeg_start_compress(&cinfo, TRUE);
 
-	row_stride = image_width * 3;	/* JSAMPLEs per row in image_buffer */
+	row_stride = image_width;	/* JSAMPLEs per row in image_buffer */
 
 	while (cinfo.next_scanline < cinfo.image_height) {
 		row_pointer[0] = &image_buffer[cinfo.next_scanline * row_stride];
@@ -157,7 +158,7 @@ read_JPEG_file(char * filename)
 
 	image_width = cinfo.image_width;
 	image_height = cinfo.image_height;
-	init_image_buffer(&cinfo);
+	init_image_buffer(image_width * image_height * cinfo.num_components);
 
 	buffer = (*cinfo.mem->alloc_sarray)
 		((j_common_ptr)&cinfo, JPOOL_IMAGE, row_stride, 1);
@@ -176,10 +177,32 @@ read_JPEG_file(char * filename)
 
 void main()
 {
-	for (int i = 0; i < 20; i++)
-	{
-		read_JPEG_file("image/Lena.jpg");
+	//for (int i = 0; i < 20; i++)
+	//{
+	//	read_JPEG_file("image/Lena.jpg");
 
-		write_JPEG_file("image/aaa.jpg", 100);
+	//	write_JPEG_file("image/aaa.jpg", 100);
+	//}
+	FileInfo fi;
+	FILE *fp;
+	fp = fopen("image/Lena.bmp","rb");
+	if (fp == NULL)
+		return;
+
+	Bmp_Read_FileInfo(fp,&fi);
+
+	image_width = fi.InfoHeader.biWidth;
+	image_height = fi.InfoHeader.biHeight;
+
+	init_image_buffer(image_width * image_height);
+
+	for (int i = 0; i < image_width; i++)
+	{
+		for (int n = 0; n < image_height; n++)
+		{
+			image_buffer[i*image_width + n] = fi.pBuff[(image_height - i - 1)*image_width + n];
+		}
 	}
+
+	write_JPEG_file("image/new.jpg", 100);
 }
