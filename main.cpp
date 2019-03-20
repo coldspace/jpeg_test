@@ -19,6 +19,28 @@ init_image_buffer(size_t i_BuffSize)
 }
 
 GLOBAL(void)
+write_image_buffer()
+{
+	FILE *fi;
+	fi = fopen("write_log", "wb");
+	if (fi == NULL)
+	{
+		return;
+	}
+
+	for (int i = 0; i < 512; i++)
+	{
+		for (int n = 0; n < 512; n++)
+		{
+			fprintf(fi, "%d ", image_buffer[i * 512 + n]);
+		}
+		fprintf(fi,"%s","\n");
+	}
+
+	fclose(fi);
+}
+
+GLOBAL(void)
 free_image_buffer()
 {
 	if (image_buffer == NULL)
@@ -204,5 +226,11 @@ void main()
 		}
 	}
 
-	write_JPEG_file("image/new.jpg", 100);
+	write_JPEG_file("image/new.jpg", 70);
+	free(image_buffer);
+	fclose(fp);
+
+	read_JPEG_file("image/new.jpg");
+	write_image_buffer();
+	write_JPEG_file("image/new1.jpg", 70);
 }
